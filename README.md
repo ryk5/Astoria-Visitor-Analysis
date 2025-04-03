@@ -36,7 +36,8 @@ Next, we need to import our data files and associated maps:
         [code]
 
 Let’s put what we have so far all together into one map (copy and paste under step 5):
-    [code]
+    [code] 
+Run the code using the green play button in the top left. 
 
 Let’s start looking at mobile phone data. 
     This code will isolate the mobile phone data to only show trips to Hudson Yards (copy and paste under step 6).
