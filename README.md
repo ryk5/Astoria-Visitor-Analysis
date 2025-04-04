@@ -25,35 +25,35 @@ First, put your name and uni after author. This is customary when writing code.
 Next, we need to import the necessary libraries for reading data, drawing our maps, etc.
 Copy and paste this code under step 1:
 
-    import matplotlib.pyplot as plt <br/>
-    import pandas as pd <br/>
-    from data_reader import read_data <br/>
-    from grid_reader import read_grids <br/>
-    from grid_mapper import map_to_taxiZones <br/>
-    from visit_counter import count_visits <br/>
-    pd.set_option('display.max_columns',None) <br/>
+    import matplotlib.pyplot as plt 
+    import pandas as pd 
+    from data_reader import read_data 
+    from grid_reader import read_grids 
+    from grid_mapper import map_to_taxiZones 
+    from visit_counter import count_visits 
+    pd.set_option('display.max_columns',None) 
 
 Next, we need to import our data files and associated maps:
 
 This code will import the census block map and data (copy and paste under step 2):
     
-    cbg_grids_name = "cb_2021_36_bg_500k.shp" <br/>
-    nyc_geoids, cbgs_nyc = read_grids(cbg_grids_name, grid_name = 'Census Blocks') <br/>
-    print(cbgs_nyc.head(3)) <br/>
+    cbg_grids_name = "cb_2021_36_bg_500k.shp" 
+    nyc_geoids, cbgs_nyc = read_grids(cbg_grids_name, grid_name = 'Census Blocks') 
+    print(cbgs_nyc.head(3)) 
         
 This code will import the taxi zone map and taxi data (copy and paste under step 3):
     
-    taxi_grids_name = "geo_export_e612eba5-03f4-49f0-a0ac-528f1c3802b8.shp" <br/>
-    taxi_zones = read_grids(taxi_grids_name, grid_name = 'taxi zones') <br/>
-    print(taxi_zones.head(3)) <br/>
+    taxi_grids_name = "geo_export_e612eba5-03f4-49f0-a0ac-528f1c3802b8.shp" 
+    taxi_zones = read_grids(taxi_grids_name, grid_name = 'taxi zones') 
+    print(taxi_zones.head(3)) 
 
-    cbgs_nyc = map_to_taxiZones(cbgs_nyc, taxi_zones) <br/>
-    print(cbgs_nyc.head(3)) <br/>
+    cbgs_nyc = map_to_taxiZones(cbgs_nyc, taxi_zones) 
+    print(cbgs_nyc.head(3)) 
         
 This code will import the boundary for Hudson Yards (copy and paste under step 4):
     
-    grids_name = "Hudson_Yards_Cut.shp" <br/>
-    attraction_zone = read_grids(grids_name, grid_name = 'attraction') <br/>
+    grids_name = "Hudson_Yards_Cut.shp" 
+    attraction_zone = read_grids(grids_name, grid_name = 'attraction') 
 
 Let’s put what we have so far all together into one map (copy and paste under step 5):
 
