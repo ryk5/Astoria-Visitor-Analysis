@@ -6,4 +6,5 @@ shapely>=2.0.1
 joblib>=1.3.0
 scikit-learn>=1.3.0
 pyarrow>=14.0.1  # for parquet support
-mapclassify>=2.4.0  # for choropleth map classification schemes 
+mapclassify>=2.4.0  # for choropleth map classification schemes
+requests>=2.31.0  # for downloading data files 

@@ -20,6 +20,8 @@ This project analyzes visitor patterns and taxi usage in the Astoria neighborhoo
   - geopandas
   - shapely
   - joblib
+  - requests
+  - mapclassify
 
 ## Data Requirements
 
@@ -28,6 +30,25 @@ The following data files are needed in the `data/` directory:
 - `yellow_tripdata_2022-12.parquet`: NYC Yellow Taxi trip data
 - `cb_2021_36_bg_500k.shp`: Census Block Groups shapefile
 - `geo_export_e612eba5-03f4-49f0-a0ac-528f1c3802b8.shp`: NYC Taxi Zone shapefile
+
+### Downloading the Data
+
+1. First, run the download script to get the taxi data and taxi zone shapefiles:
+```bash
+python download_data.py
+```
+
+2. For the remaining files:
+
+   a. Census Block Groups shapefile:
+   - Visit [US Census Bureau TIGER/Line Shapefiles](https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html)
+   - Download the 2021 Block Groups shapefile for New York
+   - Extract and place the files in the `data/` directory
+
+   b. Points of Interest data:
+   - This data contains sensitive information and requires proper authorization
+   - Contact the data administrator for access
+   - Once obtained, place the file in the `data/` directory
 
 ## Installation
 
@@ -40,6 +61,11 @@ cd Astoria-Visitor-Analysis
 2. Install required packages:
 ```bash
 pip install -r requirements.txt
+```
+
+3. Download the required data:
+```bash
+python download_data.py
 ```
 
 ## Usage
@@ -58,6 +84,7 @@ streamlit run streamlit_app.py
 
 - `lab.py`: Main analysis script
 - `streamlit_app.py`: Interactive dashboard
+- `download_data.py`: Script to download required data files
 - `data_reader.py`: Data loading utilities
 - `grid_reader.py`: Grid/shapefile processing
 - `grid_mapper.py`: Mapping utilities
