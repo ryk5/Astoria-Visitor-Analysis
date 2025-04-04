@@ -101,18 +101,70 @@ This code gives a “heat map” of where people are coming from when they trave
 
 Run the code using the green play button in the top left. 
 
-Next, we will make our taxi trip map
+Next, we will make our taxi trip map:
 
-This code does something
+This code extracts the taxi data
 
-    [code]
+    taxi_data = pd.read_parquet('data/yellow_tripdata_2022-12.parquet')
+    print('1-month taxi data count ', len(taxi_data))
+    print(taxi_data.head(3))
+
+This code defines taxi zones that Hudson Yards contains:
+
+    AttDO_zones = taxi_zones[taxi_zones.intersects(attraction_zone.loc[0,'geometry'])]
+    print(AttDO_zones.head(4))
+
+This code maps the intersections of the zones we just defined:
+
+    fig, ax = plt.subplots(figsize = (5,5))
+    AttDO_zones.plot(ax = ax)
+    attraction_zone.plot(ax=ax, color='red', alpha = 0.6)
+    plt.show()
+    AttDO_zones_ids = AttDO_zones['objectid'].unique().tolist()
+    print('taxi zone IDs within the attraction region: ', AttDO_zones_ids)
+
+This code isolates the taxi data that goes into Hudson Yards:
+
+    taxi_data = taxi_data[taxi_data['DOLocationID'].isin(AttDO_zones_ids)] # AttDO: attraction drop off zone id
+    print(taxi_data.head(5))
+    trip_passenger_counts = pd.DataFrame(taxi_data.groupby('PULocationID')['passenger_count'].sum()).reset_index(drop=False)
+    print(trip_passenger_counts.head(5))
+
+Now, we can map our progress again:
+
+    visitor_counts_wTaxi_use = pd.merge(visitor_counts, trip_passenger_counts, left_on = 'taxi_object_id', right_on = 'PULocationID', how = 'left' )
+    print(len(visitor_counts_wTaxi_use))
+    print(visitor_counts_wTaxi_use.head(2))
+    fig, ax = plt.subplots(figsize=(10,10))
+    plt.axis('off')
+    cbgs_nyc.plot(ax=ax, alpha=0.7) #, column='objectid'
+    visitor_counts_wTaxi_use.plot(column = 'passenger_count', ax = ax, legend=True, cmap='viridis',legend_kwds={'loc': 'upper left'},
+            scheme = 'User_Defined', #quantiles
+            classification_kwds =dict(bins=[ 25,50,100, 1000,5000, 10000, 20000, 30000])) #[4, 8, 50, 100, 200, merged['cnt'].max()]
+    ax.get_legend().set_title("Taxi Passengers Count")
+    attraction_zone.plot(ax=ax, color='red', alpha = 0.4)
+    plt.show()
+
+Run the code using the green play button in the top left. 
 
 Now, we want to look at the ratio of trips taken by taxi vs the total trips taken.
 
 This "ratio map" shows us each taxi zone and the ratio of trips taken by taxi vs the total trips taken from that zone (from the mobile phone data).
 
+    comparison_data = visitor_counts_wTaxi_use[['taxi_object_id',	'visitor_cnt','passenger_count', 'geometry']]
+    comparison_data['ratio'] = comparison_data['passenger_count']/comparison_data['visitor_cnt']
+    print(comparison_data.head(5))
+    fig, ax = plt.subplots(figsize=(10,10))
+    cbgs_nyc.plot(ax=ax, alpha=0.7) 
+    plt.axis('off')
+    comparison_data.plot(column = 'ratio', ax = ax, legend=True, cmap='viridis',legend_kwds={'loc': 'upper left'},
+            scheme = 'User_Defined', #, #quantiles, User_Defined
+            classification_kwds =dict(bins=[ 0.03, 0.08, 0.81,10, 66.2, 100, 200, 500, 1200])) #[4, 8, 50, 100, 200, merged['cnt'].max()]
+    ax.get_legend().set_title("Ratio of taxi use over visitor cnt")
+    attraction_zone.plot(ax=ax, color='red', alpha = 0.4)
+    plt.show()
 
-
+Run the code using the green play button in the top left. 
 
 With our final maps done and dusted, think about what our maps tell us about transportation infrastructure needs.
 
