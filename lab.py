@@ -33,31 +33,38 @@ INSERT CODE HERE
 INSERT CODE HERE
 '''
 
-#Step 7: Isolate the mobile phone data with trips to Hudson Yards
+#Step 7: Merge the origin of the mobile phone data with their corresponding Taxi Zones
 '''
 INSERT CODE HERE
 '''
 
-#Step 8: Merge the origin of the mobile phone data with their corresponding Taxi Zones
+#Step 8: Map the results so far
 '''
 INSERT CODE HERE
 '''
 
-#Step 9: Map the results so far
+#Step 9: Import the Yellow Taxi data
 '''
 INSERT CODE HERE
 '''
 
-#Step 10: Import the Yellow Taxi data
+#Step 10: Define Hudson Yards taxi zones
 '''
 INSERT CODE HERE
 '''
 
-#Step 11: 
+#Step 11: Isolate data to Hudson Yards
 '''
 INSERT CODE HERE
 '''
 
+#Step 12: Draw new map
+'''
+INSERT CODE HERE
+'''
 
-
+#Step 13: The ratio map
+'''
+INSERT CODE HERE
+'''
 
