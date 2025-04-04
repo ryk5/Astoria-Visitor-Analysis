@@ -93,10 +93,12 @@ print(taxi_data.head(5))
 trip_passenger_counts = pd.DataFrame(taxi_data.groupby('PULocationID')['passenger_count'].sum()).reset_index(drop=False)
 print(trip_passenger_counts.head(5))
 
+#Map the pick up data to the corresponding taxi zone data (location, name,etc)
 visitor_counts_wTaxi_use = pd.merge(visitor_counts, trip_passenger_counts, left_on = 'taxi_object_id', right_on = 'PULocationID', how = 'left' )
 print(len(visitor_counts_wTaxi_use))
 print(visitor_counts_wTaxi_use.head(2))
 
+#Display map of taxi data
 fig, ax = plt.subplots(figsize=(10,10))
 plt.axis('off')
 cbgs_nyc.plot(ax=ax, alpha=0.7) #, column='objectid'
@@ -107,10 +109,12 @@ ax.get_legend().set_title("Taxi Passengers Count")
 attraction_zone.plot(ax=ax, color='red', alpha = 0.4)
 plt.show()
 
+#calculate ratios
 comparison_data = visitor_counts_wTaxi_use[['taxi_object_id',	'visitor_cnt','passenger_count', 'geometry']]
 comparison_data['ratio'] = comparison_data['passenger_count']/comparison_data['visitor_cnt']
 print(comparison_data.head(5))
 
+#ratio map
 fig, ax = plt.subplots(figsize=(10,10))
 cbgs_nyc.plot(ax=ax, alpha=0.7) 
 plt.axis('off')
