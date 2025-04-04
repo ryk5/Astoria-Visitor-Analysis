@@ -1,3 +1,76 @@
+# Astoria Visitor Analysis
+
+This project analyzes visitor patterns and taxi usage in the Astoria neighborhood of Queens, NYC. It uses mobile phone data and taxi trip data to understand movement patterns and transportation preferences in the area.
+
+## Features
+
+- Interactive visualization of Astoria neighborhood boundaries
+- Analysis of visitor counts by zone
+- Taxi passenger count analysis
+- Ratio analysis of taxi usage to visitor count
+- Machine learning model for visitor prediction
+
+## Requirements
+
+- Python 3.7+
+- Required Python packages:
+  - streamlit
+  - matplotlib
+  - pandas
+  - geopandas
+  - shapely
+  - joblib
+
+## Data Requirements
+
+The following data files are needed in the `data/` directory:
+- `poi_NY_initial_subset.csv`: Points of Interest data with visitor information
+- `yellow_tripdata_2022-12.parquet`: NYC Yellow Taxi trip data
+- `cb_2021_36_bg_500k.shp`: Census Block Groups shapefile
+- `geo_export_e612eba5-03f4-49f0-a0ac-528f1c3802b8.shp`: NYC Taxi Zone shapefile
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/ryk5/Astoria-Visitor-Analysis.git
+cd Astoria-Visitor-Analysis
+```
+
+2. Install required packages:
+```bash
+pip install -r requirements.txt
+```
+
+## Usage
+
+1. Run the main analysis:
+```bash
+python lab.py
+```
+
+2. Launch the Streamlit dashboard:
+```bash
+streamlit run streamlit_app.py
+```
+
+## Project Structure
+
+- `lab.py`: Main analysis script
+- `streamlit_app.py`: Interactive dashboard
+- `data_reader.py`: Data loading utilities
+- `grid_reader.py`: Grid/shapefile processing
+- `grid_mapper.py`: Mapping utilities
+- `visit_counter.py`: Visitor counting functions
+
+## License
+
+MIT License
+
+## Author
+
+Ryan Kim (rjk2189)
+
 This tutorial guides you through the basic process of reading data and drawing conclusions on that data with python. 
 No previous coding knowledge is required. All of the code is already written for you by Ethan!
 
@@ -55,7 +128,7 @@ This code will import the boundary for Hudson Yards (copy and paste under step 4
     grids_name = "Hudson_Yards_Cut.shp" 
     attraction_zone = read_grids(grids_name, grid_name = 'attraction') 
 
-Let’s put what we have so far all together into one map (copy and paste under step 5):
+Let's put what we have so far all together into one map (copy and paste under step 5):
 
     fig, ax = plt.subplots(figsize = (10,10))
     taxi_zones.plot(ax=ax)
@@ -64,7 +137,7 @@ Let’s put what we have so far all together into one map (copy and paste under 
     
 Run the code using the green play button in the top left. 
 
-Let’s start looking at mobile phone data. 
+Let's start looking at mobile phone data. 
 
 This code will isolate the mobile phone data to only show trips to Hudson Yards (copy and paste under step 6).
     
@@ -85,9 +158,9 @@ This code will match that data to the taxi zones we have defined (copy and paste
     visitor_counts = pd.merge(taxi_zones, visitor_counts, left_on='objectid', right_on='taxi_object_id', how='right' )  
     print(visitor_counts.sort_values("taxi_object_id").head(3))
 
-Let’s check in on our progress.
+Let's check in on our progress.
 
-This code gives a “heat map” of where people are coming from when they travel to Hudson Yards (copy and paste under step 8). 
+This code gives a "heat map" of where people are coming from when they travel to Hudson Yards (copy and paste under step 8). 
     
     fig, ax = plt.subplots(figsize=(10,10))
     cbgs_nyc.plot(ax=ax, alpha=0.7) #, column='objectid'
