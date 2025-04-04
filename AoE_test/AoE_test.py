@@ -57,7 +57,7 @@ visitor_counts = pd.DataFrame(merged.groupby('taxi_object_id')['visitor_cnt'].su
 visitor_counts = pd.merge(taxi_zones, visitor_counts, left_on='objectid', right_on='taxi_object_id', how='right' )  
 print(visitor_counts.sort_values("taxi_object_id").head(3))
 
-#map the number of trips froom each taxi zone to Hudsonn Yards
+#map the number of trips from each taxi zone to Hudson Yards
 fig, ax = plt.subplots(figsize=(10,10))
 cbgs_nyc.plot(ax=ax, alpha=0.7) #, column='objectid'
 tmp = visitor_counts[~visitor_counts['geometry'].isna()] #viridis, RdBu
@@ -73,9 +73,11 @@ taxi_data = pd.read_parquet('data/yellow_tripdata_2022-12.parquet')
 print('1-month taxi data count ', len(taxi_data))
 print(taxi_data.head(3))
 
+#Determine the taxi zones that Hudson Yards contains
 AttDO_zones = taxi_zones[taxi_zones.intersects(attraction_zone.loc[0,'geometry'])]
 print(AttDO_zones.head(4))
 
+#Map out the intersection of Hudson Yards and Taxi Zones
 fig, ax = plt.subplots(figsize = (5,5))
 AttDO_zones.plot(ax = ax)
 attraction_zone.plot(ax=ax, color='red', alpha = 0.6)
@@ -83,9 +85,11 @@ plt.show()
 AttDO_zones_ids = AttDO_zones['objectid'].unique().tolist()
 print('taxi zone IDs within the attraction region: ', AttDO_zones_ids)
 
+#isolate the taxi data that goes to Hudson Yards
 taxi_data = taxi_data[taxi_data['DOLocationID'].isin(AttDO_zones_ids)] # AttDO: attraction drop off zone id
 print(taxi_data.head(5))
 
+#aggregate the taxi data that goes to Hudson Yards
 trip_passenger_counts = pd.DataFrame(taxi_data.groupby('PULocationID')['passenger_count'].sum()).reset_index(drop=False)
 print(trip_passenger_counts.head(5))
 
