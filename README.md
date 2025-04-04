@@ -78,11 +78,26 @@ This code will isolate the mobile phone data to only show trips to Hudson Yards 
         
 This code will match that data to the taxi zones we have defined (copy and paste under step 7). 
 
+    merged = pd.merge(cbgs_nyc, visits, left_on = 'GEOID', right_on = 'geoid', how = 'right' )[['taxi_object_id','visitor_cnt','geometry','geoid','GEOID']]
+    merged = merged[~merged['taxi_object_id'].isna()]
+    print(merged.head(2))
+    visitor_counts = pd.DataFrame(merged.groupby('taxi_object_id')['visitor_cnt'].sum()).reset_index(drop=False)
+    visitor_counts = pd.merge(taxi_zones, visitor_counts, left_on='objectid', right_on='taxi_object_id', how='right' )  
+    print(visitor_counts.sort_values("taxi_object_id").head(3))
+
 Let’s check in on our progress.
 
 This code gives a “heat map” of where people are coming from when they travel to Hudson Yards (copy and paste under step 8). 
     
-    [code]
+    fig, ax = plt.subplots(figsize=(10,10))
+    cbgs_nyc.plot(ax=ax, alpha=0.7) #, column='objectid'
+    tmp = visitor_counts[~visitor_counts['geometry'].isna()] #viridis, RdBu
+    tmp.plot(column = 'visitor_cnt', ax = ax, legend=True, cmap='viridis',legend_kwds={'loc': 'upper left'},
+        scheme ='User_Defined', #quantiles
+        classification_kwds =dict(bins=[ 8,20, 60, 100, 150, 250,300, 500])) #[4, 8, 50, 100, 200, merged['cnt'].max()]
+    ax.get_legend().set_title("Hudson Yards Visitor Counts")
+    attraction_zone.plot(ax=ax, color='red', alpha = 0.4)
+    plt.show()
 
 Run the code using the green play button in the top left. 
 
