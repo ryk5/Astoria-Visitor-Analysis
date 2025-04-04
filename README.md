@@ -25,46 +25,76 @@ First, put your name and uni after author. This is customary when writing code.
 Next, we need to import the necessary libraries for reading data, drawing our maps, etc.
 Copy and paste this code under step 1:
 
-[code]
+    import matplotlib.pyplot as plt <br/>
+    import pandas as pd <br/>
+    from data_reader import read_data <br/>
+    from grid_reader import read_grids <br/>
+    from grid_mapper import map_to_taxiZones <br/>
+    from visit_counter import count_visits <br/>
+    pd.set_option('display.max_columns',None) <br/>
 
 Next, we need to import our data files and associated maps:
-    This code will import the census block map and data (copy and paste under step 2):
+
+This code will import the census block map and data (copy and paste under step 2):
     
-    [code]
+    cbg_grids_name = "cb_2021_36_bg_500k.shp" <br/>
+    nyc_geoids, cbgs_nyc = read_grids(cbg_grids_name, grid_name = 'Census Blocks') <br/>
+    print(cbgs_nyc.head(3)) <br/>
         
-    This code will import the taxi zone map and taxi data (copy and paste under step 3):
+This code will import the taxi zone map and taxi data (copy and paste under step 3):
     
-    [code]
+    taxi_grids_name = "geo_export_e612eba5-03f4-49f0-a0ac-528f1c3802b8.shp" <br/>
+    taxi_zones = read_grids(taxi_grids_name, grid_name = 'taxi zones') <br/>
+    print(taxi_zones.head(3)) <br/>
+
+    cbgs_nyc = map_to_taxiZones(cbgs_nyc, taxi_zones) <br/>
+    print(cbgs_nyc.head(3)) <br/>
         
-    This code will import the boundary for Hudson Yards (copy and paste under step 4):
+This code will import the boundary for Hudson Yards (copy and paste under step 4):
     
-    [code]
+    grids_name = "Hudson_Yards_Cut.shp" <br/>
+    attraction_zone = read_grids(grids_name, grid_name = 'attraction') <br/>
 
 Let’s put what we have so far all together into one map (copy and paste under step 5):
 
-[code] 
+    fig, ax = plt.subplots(figsize = (10,10))
+    taxi_zones.plot(ax=ax)
+    attraction_zone.plot(ax=ax, color='red', alpha=0.7)
+    plt.show()
     
 Run the code using the green play button in the top left. 
 
 Let’s start looking at mobile phone data. 
-    This code will isolate the mobile phone data to only show trips to Hudson Yards (copy and paste under step 6).
+
+This code will isolate the mobile phone data to only show trips to Hudson Yards (copy and paste under step 6).
     
-    [code]
+    file_name = 'data/poi_NY_initial_subset.csv'
+    geo_data = read_data(file_name)
+    print(geo_data.head(5))
+    geo_data = geo_data[geo_data.within(attraction_zone.loc[0,'geometry'])]
+    geo_data = geo_data[~geo_data['visitor_home_cbgs'].isna()][['location_name','visitor_home_cbgs']] #clean data
+    visits = count_visits(geo_data, nyc_geoids)
+    print(visits.head(4))
         
-    This code will match that data to the taxi zones we have defined (copy and paste under step 7). 
+This code will match that data to the taxi zones we have defined (copy and paste under step 7). 
 
 Let’s check in on our progress.
-    This code gives a “heat map” of where people are coming from when they travel to Hudson Yards (copy and paste under step 8). 
+
+This code gives a “heat map” of where people are coming from when they travel to Hudson Yards (copy and paste under step 8). 
     
     [code]
 
+Run the code using the green play button in the top left. 
+
 Next, we will make our taxi trip map
-    This code does something
+
+This code does something
 
     [code]
 
 Now, we want to look at the ratio of trips taken by taxi vs the total trips taken.
-    This "ratio map" shows us each taxi zone and the ratio of trips taken by taxi vs the total trips taken from that zone (from the mobile phone data).
+
+This "ratio map" shows us each taxi zone and the ratio of trips taken by taxi vs the total trips taken from that zone (from the mobile phone data).
 
 
 
