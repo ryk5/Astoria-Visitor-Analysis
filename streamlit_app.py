@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import geopandas as gpd
 from grid_reader import read_grids
 from shapely.geometry import Polygon
+from PIL import Image
 
 # Set page config
 st.set_page_config(
@@ -14,7 +15,7 @@ st.set_page_config(
 # Title and description
 st.title("Astoria Visitor Analysis Dashboard")
 st.markdown("""
-This dashboard visualizes the Astoria neighborhood area in Queens, NYC.
+This dashboard visualizes the Astoria neighborhood area in Queens, NYC and related analysis visualizations.
 """)
 
 # Function to load and process data
@@ -68,12 +69,29 @@ try:
     
     create_maps(taxi_zones, attraction_zone)
     
+    # Display additional visualizations
+    st.subheader("Additional Visualizations")
+    
+    # Create three columns for the images
+    col1, col2, col3 = st.columns(3)
+    
+    # Load and display images
+    with col1:
+        st.image("data/visitorcountsbyzone.png", caption="Visitor Counts by Zone")
+    
+    with col2:
+        st.image("data/taxipassengercounts.png", caption="Taxi Passenger Counts")
+    
+    with col3:
+        st.image("data/taxiratio.png", caption="Taxi Usage Ratio")
+    
     # Add insights section
     st.subheader("Map Legend")
     st.markdown("""
     ### Area Information
     - The red highlighted area shows the Astoria neighborhood boundaries
     - The surrounding areas show NYC taxi zones
+    - Additional visualizations show visitor counts, taxi passenger counts, and usage ratios
     """)
 
 except Exception as e:
